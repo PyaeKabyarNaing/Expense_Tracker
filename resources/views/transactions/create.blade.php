@@ -3,14 +3,15 @@
 
 @section('content')
 <div class="container py-4">
-    <h2 class="mb-4 text-center">Add Income</h2>
+    <h2 class="mb-4 text-center">Add {{$type}}</h2>
     <div class="row justify-content-center">
         <div class="col-md-6">
             <form method="POST" action="{{ route('transactions.store') }}">
                 @csrf
                 <div class="mb-3">
                     <label for="type" class="form-label">Type</label>
-                    <input type="text" name="type" id="type" class="form-control" value="Income" readonly>
+                    <input class="form-control" name="type" value="{{ $type }}">
+
                 </div>
                 <div class="mb-3">
                     <label for="amount" class="form-label">Amount</label>

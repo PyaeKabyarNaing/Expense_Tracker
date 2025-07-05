@@ -18,15 +18,21 @@ class TransactionController extends Controller
         return view('transactions.index', compact('transactions', 'income', 'expense', 'balance')); // passing balance to the view
     }
 
+    // public function add(Request $request)
+    // {
+    //     $type = $request->query('type', 'expense');
+    //     if ($type == 'income') {
+    //         return view('transactions.income', compact('type'));
+    //     } else {
+    //         return view('transactions.expense', compact('type'));
+    //     }
+    // }
     public function add(Request $request)
-    {
-        $type = $request->query('type', 'expense');
-        if ($type == 'income') {
-            return view('transactions.income', compact('type'));
-        } else {
-            return view('transactions.expense', compact('type'));
-        }
-    }
+{
+    $type = $request->query('type', 'expense'); // default to expense
+    return view('transactions.create', compact('type'));
+}
+
     public function create(Request $request)
     {
         $validator = validator(request()->all(), [
@@ -40,9 +46,9 @@ class TransactionController extends Controller
         }
 
         $transaction = new Transaction;
-        $transaction->title = request()->amount;
-        $transaction->body = request()->description;
-        $transaction->category_id = request()->date;
+        $transaction->amount = request()->amount;
+        $transaction->description = request()->description;
+        $transaction->date = request()->date;
         $transaction->user_id = Auth::id();
         $transaction->save();
 
