@@ -1,14 +1,6 @@
 {{-- filepath: /Users/pyaekabyarnaing/Developments/Expense_Tracker/resources/views/transactions/index.blade.php --}}
 @extends('layouts.app')
 
-@push('styles')
-<link rel="stylesheet" href="{{ asset('resources/css/all.min.css') }}">
-@endpush
-
-@push('scripts')
-<script src="{{ asset('resources/js/all.min.js') }}"></script>
-@endpush
-this is in feature
 @section('content')
 <div class="container-fluid py-4">
     <div class="row">
@@ -17,48 +9,23 @@ this is in feature
                 <a class="nav-link {{ request()->is('transactions') ? 'active fw-bold' : '' }}" href="{{ route('transactions.index') }}">
                     <i class="bi bi-list"></i> Transactions
                 </a>
-                <a class="nav-link" href="{{ route('incomes.index') }}">
+                <a class="nav-link {{ request()->is('transactions/create*') && request('type') === 'income' ? 'active fw-bold' : '' }}" href="{{ route('incomes.index') }}">
                     <i class="bi bi-plus-circle"></i>Income
                 </a>
                 <a class="nav-link {{ request()->is('transactions/create*') && request('type') === 'expense' ? 'active fw-bold' : '' }}" href="{{ route('transactions.create', ['type' => 'expense']) }}">
-                    <i class="bi bi-dash-circle"></i> Add Expense
+                    <i class="bi bi-dash-circle"></i>  Expense
                 </a>
                 {{-- Add more nav links for other tabs/pages as needed --}}
             </nav>
         </div>
         <div class="col-md-10">
-            @if(session("success"))
-            <div class="alert alert-success">
-                {{ session("success") }}
-            </div>
-            @endif
-
-            <h2 class="mb-4 text-center">Income & Expense Tracker</h2>
-            <div class="row mb-4 justify-content-center">
-                <div class="col-md-4">
-                    <div class="card text-white bg-success mb-2">
-                        <div class="card-body">
-                            <strong>Balance:</strong>
-                            <span class="float-end">${{ number_format($balance, 2) }}</span>
-                        </div>
-                    </div>
                     <div class="card text-white bg-primary mb-2">
                         <div class="card-body">
                             <strong>Total Income:</strong>
                             <span class="float-end">${{ number_format($income, 2) }}</span>
                         </div>
                     </div>
-                    <div class="card text-white bg-danger">
-                        <div class="card-body">
-                            <strong>Total Expense:</strong>
-                            <span class="float-end">${{ number_format($expense, 2) }}</span>
-                        </div>
-                    </div>
                 </div>
-            </div>
-            <div class="mb-3 text-end">
-                <a href="{{ route('transactions.create', ['type' => 'income']) }}" class="btn btn-dark">Add Income</a>
-                <a href="{{ route('transactions.create', ['type' => 'expense']) }}" class="btn btn-dark">Add Expense</a>
             </div>
             <div class="table-responsive">
                 <table class="table table-bordered table-striped align-middle">
@@ -71,7 +38,7 @@ this is in feature
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse($transactions as $t)
+                            @forelse($transactions as $t)
                         <tr>
                             <td>{{ $t->date }}</td>
                             <td>
@@ -84,11 +51,14 @@ this is in feature
                             </td>
                             <td>{{ $t->description }}</td>
                         </tr>
+                            
                         @empty
                         <tr>
                             <td colspan="4" class="text-center">No transactions found.</td>
                         </tr>
+                    
                         @endforelse
+                        
                     </tbody>
                 </table>
             </div>

@@ -3,12 +3,13 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\IncomeController;
 
 // Route::get('/', function () {
 //     return view('welcome');
 // });
 
-Route::get('/', [TransactionController::class, 'index'])->name('transactions.index');
+    Route::get('/', [TransactionController::class, 'index'])->name('transactions.index');
     Route::get('/transactions', [TransactionController::class, 'index'])->name('transactions.index');
 
 Route::middleware(['auth'])->group(function () {
@@ -21,6 +22,9 @@ Route::middleware(['auth'])->group(function () {
     // Route::get('/transactions/expense_create', [TransactionController::class, 'expense_create'])->name('transactions.expense'); 
 
     Route::post('/transactions', [TransactionController::class, 'store'])->name('transactions.store');
+
+    // income
+    Route::get('/incomes', [IncomeController::class, 'index'])->name('incomes.index');
 });
 
 Auth::routes();

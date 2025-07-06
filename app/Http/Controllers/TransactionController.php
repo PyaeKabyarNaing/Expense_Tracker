@@ -16,6 +16,7 @@ class TransactionController extends Controller
         $balance = $income - $expense; // calculating balance
 
         return view('transactions.index', compact('transactions', 'income', 'expense', 'balance')); // passing balance to the view
+        return view('incomes.index', compact('income')); // passing balance to the view
     }
 
     // public function add(Request $request)
@@ -52,7 +53,7 @@ class TransactionController extends Controller
         $transaction->user_id = Auth::id();
         $transaction->save();
 
-        return redirect("/transactions");
+        return redirect("/transactions")->with('success', 'Transaction added successfully!');
     }
 
     // public function income_create(Request $request)
