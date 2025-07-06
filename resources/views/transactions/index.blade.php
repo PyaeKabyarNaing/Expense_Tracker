@@ -1,14 +1,6 @@
 {{-- filepath: /Users/pyaekabyarnaing/Developments/Expense_Tracker/resources/views/transactions/index.blade.php --}}
 @extends('layouts.app')
 
-@push('styles')
-<link rel="stylesheet" href="{{ asset('resources/css/all.min.css') }}">
-@endpush
-
-@push('scripts')
-<script src="{{ asset('resources/js/all.min.js') }}"></script>
-@endpush
-this is in feature
 @section('content')
 <div class="container-fluid py-4">
     <div class="row">
