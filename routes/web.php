@@ -25,6 +25,10 @@ Route::middleware(['auth'])->group(function () {
 
     // income
     Route::get('/incomes', [IncomeController::class, 'index'])->name('incomes.index');
+
+    // budgets
+    Route::get('/budgets', [App\Http\Controllers\BudgetController::class, 'categories'])->name('budgets.index');
+    Route::post('/budgets', [App\Http\Controllers\BudgetController::class, 'store'])->name('budgets.store');
 });
 
 Auth::routes();

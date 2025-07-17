@@ -65,15 +65,39 @@
         </div>
     </div>
 
+    <form method="GET" action="{{ route('transactions.index') }}" class="mb-3">
+    <label for="category_id" class="form-label">Choose Category:</label>
+    <select name="category_id" id="category_id" onchange="this.form.submit()" class="form-select w-auto d-inline-block">
+        <option value="">-- Select Category --</option>
+        @foreach ($categories as $category)
+            <option value="{{ $category->id }}" {{ request('category_id') == $category->id ? 'selected' : '' }}>
+                {{ $category->name }}
+            </option>
+        @endforeach
+    </select>
+</form>
+@if(request('category_id'))
     <div class="col-md-6 col-lg-6">
-        <div class="card text-dark bg-white border-dark">
+        <div class="card text-dark bg-white border-dark shadow-sm">
             <div class="card-body">
-                <strong class="h3">Budget:</strong>
-                <span class="h3 float-end">${{ number_format($balance, 2) }}</span><br><br>
-                <button class="bg-dark text-white float-end rounded px-2 py-1">Set Budget</button>
+                <h5>Budget for {{ $categories->find(request('category_id'))->name }}</h5>
+
+                @if($selectedBudget)
+                    <p class="mb-0">
+                        Amount: <strong>${{ number_format($selectedBudget->amount, 2) }}</strong><br>
+                        Period: {{ $selectedBudget->start_date }} to {{ $selectedBudget->end_date }}
+                    </p>
+                @else
+                    <p class="text-muted mb-0">No budget set for this category.</p>
+                @endif
+
+                <a href="{{ route('budgets.index') }}" class="btn btn-dark btn-sm mt-3">
+                    Manage Budgets
+                </a>
             </div>
         </div>
     </div>
+@endif
 
     <div class="col-md-6 col-lg-6">
         <div class="card text-white bg-primary">

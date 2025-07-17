@@ -3,21 +3,44 @@
 namespace App\Http\Controllers;
 
 use App\Models\Transaction;
+use App\Models\Category;
+use App\Models\Budget;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class TransactionController extends Controller
 {
-    public function index()
-    {
-        $transactions = Transaction::where('user_id', Auth::id())->orderBy('date', 'desc')->get();
-        $income = $transactions->where('type', 'income')->sum('amount');
-        $expense = $transactions->where('type', 'expense')->sum('amount');
-        $balance = $income - $expense; // calculating balance
+    public function index(Request $request)
+{
+    $transactions = Transaction::where('user_id', Auth::id())
+        ->orderBy('date', 'desc')
+        ->get();
 
-        return view('transactions.index', compact('transactions', 'income', 'expense', 'balance')); // passing balance to the view
-        return view('incomes.index', compact('income')); // passing balance to the view
+    $income = $transactions->where('type', 'income')->sum('amount');
+    $expense = $transactions->where('type', 'expense')->sum('amount');
+    $balance = $income - $expense;
+
+    // Fetch all categories
+    $categories = Category::all();
+
+    // Fetch budget for selected category (only one!)
+    $selectedBudget = null;
+
+    if ($request->filled('category_id')) {
+        $selectedBudget = Budget::where('user_id', Auth::id())
+            ->where('category_id', $request->category_id)
+            ->first();
     }
+
+    return view('transactions.index', compact(
+        'transactions',
+        'income',
+        'expense',
+        'balance',
+        'categories',
+        'selectedBudget'
+    ));
+}
 
     // public function add(Request $request)
     // {
@@ -85,4 +108,10 @@ class TransactionController extends Controller
 
         return redirect()->route('transactions.index')->with('success', 'Transaction added!');
     }
+
+    // public function budget()
+    // {
+    //     $categories = Category::all();
+    //     return view('transactions.index', compact('categories'));
+    // }
 }
